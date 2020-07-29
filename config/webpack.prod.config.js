@@ -1,5 +1,6 @@
 // This is the prod Webpack config. All settings here should prefer smaller,
 // optimized bundles at the expense of a longer build time.
+
 const Merge = require('webpack-merge');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
@@ -11,18 +12,23 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const PostCssRtlPlugin = require('postcss-rtl');
 const PostCssAutoprefixerPlugin = require('autoprefixer');
 const CssNano = require('cssnano');
+const webpack = require('webpack');
 
 const commonConfig = require('./webpack.common.config.js');
 const getProjectConfigFile = require('../lib/getProjectConfigFile');
 
 const { PROJECT_ROOT } = require('../lib/paths');
 
+const BASENAME = process.env.BASENAME || '/';
+
 module.exports = Merge.smart(commonConfig, {
   mode: 'production',
   devtool: 'source-map',
   output: {
     filename: '[name].[chunkhash].js',
-    path: path.resolve(PROJECT_ROOT, 'dist'),
+    path: path.resolve(PROJECT_ROOT, 'dist', BASENAME),
+    publicPath: BASENAME,
+
   },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
@@ -167,6 +173,10 @@ module.exports = Merge.smart(commonConfig, {
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
+    }),
+    // This makes it possible for us to safely use BASENAME environment variable on our code.
+    new webpack.DefinePlugin({
+	'process.env.BASENAME': JSON.stringify(BASENAME),
     }),
   ],
 });

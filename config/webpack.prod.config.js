@@ -26,7 +26,7 @@ module.exports = Merge.smart(commonConfig, {
   devtool: 'source-map',
   output: {
     filename: '[name].[chunkhash].js',
-    path: path.resolve(PROJECT_ROOT, 'dist', BASENAME),
+    path: path.join(path.resolve(PROJECT_ROOT, 'dist'), BASENAME),
     publicPath: BASENAME,
 
   },

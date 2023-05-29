@@ -2,7 +2,6 @@
 // time at the expense of creating larger, unoptimized bundles.
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssNano = require('cssnano');
 const { merge } = require('webpack-merge');
 const Dotenv = require('dotenv-webpack');
 const dotenv = require('dotenv');
@@ -31,15 +30,7 @@ resolvePrivateEnvConfig('.env.private');
 const aliases = getLocalAliases();
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
-function getStyleUseConfig({ isMinified = false } = {}) {
-  const postCssPlugins = [
-    PostCssAutoprefixerPlugin(),
-    PostCssRTLCSS(),
-    PostCssCustomMediaCSS(),
-  ];
-  if (isMinified) {
-    postCssPlugins.push(CssNano());
-  }
+function getStyleUseConfig() {
   return [
     {
       loader: 'css-loader', // translates CSS into CommonJS
@@ -54,7 +45,11 @@ function getStyleUseConfig({ isMinified = false } = {}) {
       loader: 'postcss-loader',
       options: {
         postcssOptions: {
-          plugins: postCssPlugins,
+          plugins: [
+            PostCssAutoprefixerPlugin(),
+            PostCssRTLCSS(),
+            PostCssCustomMediaCSS(),
+          ],
         },
       },
     },
@@ -116,7 +111,7 @@ module.exports = merge(commonConfig, {
             resource: /paragon/,
             use: [
               MiniCssExtractPlugin.loader,
-              ...getStyleUseConfig({ isMinified: true }),
+              ...getStyleUseConfig(),
             ],
           },
           {

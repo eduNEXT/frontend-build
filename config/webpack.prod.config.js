@@ -15,6 +15,7 @@ const path = require('path');
 const PostCssAutoprefixerPlugin = require('autoprefixer');
 const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 // Reduce CSS file size by ~70%
 const purgecss = require('@fullhuman/postcss-purgecss');
@@ -210,6 +211,10 @@ module.exports = merge(commonConfig, {
     new Dotenv({
       path: path.resolve(process.cwd(), '.env'),
       systemvars: true,
+    }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
+      test: /.js$|.css$/,
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

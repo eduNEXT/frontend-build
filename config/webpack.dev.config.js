@@ -108,7 +108,7 @@ module.exports = merge(commonConfig, {
         test: /(.scss|.css)$/,
         oneOf: [
           {
-            resource: /paragon/,
+            resource: /(@edx\/paragon|@edx\/brand)/,
             use: [
               MiniCssExtractPlugin.loader,
               ...getStyleUseConfig(),

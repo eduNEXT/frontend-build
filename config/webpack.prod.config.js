@@ -18,6 +18,9 @@ const HtmlWebpackNewRelicPlugin = require('../lib/plugins/html-webpack-new-relic
 const commonConfig = require('./webpack.common.config');
 const presets = require('../lib/presets');
 
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const ASSETS_URL = process.env.ASSETS_URL || '';
+
 // Add process env vars. Currently used only for setting the PUBLIC_PATH.
 dotenv.config({
   path: path.resolve(process.cwd(), '.env'),
@@ -51,7 +54,7 @@ module.exports = merge(commonConfig, {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath: process.env.PUBLIC_PATH || '/',
+    publicPath: `${ASSETS_URL}${PUBLIC_PATH}`,
   },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.

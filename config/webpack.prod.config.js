@@ -2,7 +2,6 @@
 // optimized bundles at the expense of a longer build time.
 
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
-
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { merge } = require('webpack-merge');
@@ -17,6 +16,9 @@ const PostCssAutoprefixerPlugin = require('autoprefixer');
 const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
 
+// Reduce CSS file size by ~70%
+const purgecss = require('@fullhuman/postcss-purgecss');
+
 const HtmlWebpackNewRelicPlugin = require('../lib/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
 const presets = require('../lib/presets');
@@ -26,6 +28,12 @@ dotenv.config({
   path: path.resolve(process.cwd(), '.env'),
 });
 
+const extraPostCssPlugins = [];
+if (process.env.USE_PURGECSS) { // If USE_PURGECSS is set we append it.
+  extraPostCssPlugins.push(purgecss({
+    content: ['./**/*.html', './**/*.js', './**/*.jsx', './**/*.ts', './**/*.tsx'],
+  }));
+}
 const extraPlugins = [];
 if (process.env.ENABLE_NEW_RELIC !== 'false') {
   // Enable NewRelic logging only if the account ID is properly defined
@@ -63,7 +71,7 @@ module.exports = merge(commonConfig, {
       // Babel is configured with the .babelrc file at the root of the project.
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules\/(?!@edx)/,
+        exclude: /node_modules\/(?!@(open)?edx)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -108,6 +116,7 @@ module.exports = merge(commonConfig, {
                   PostCssRTLCSS(),
                   PostCssCustomMediaCSS(),
                   CssNano(),
+                  ...extraPostCssPlugins,
                 ],
               },
             },
@@ -122,6 +131,8 @@ module.exports = merge(commonConfig, {
                   path.join(process.cwd(), 'node_modules'),
                   path.join(process.cwd(), 'src'),
                 ],
+                // silences compiler warnings regarding deprecation warnings
+                quietDeps: true,
               },
             },
           },

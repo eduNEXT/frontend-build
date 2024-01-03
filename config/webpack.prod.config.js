@@ -17,9 +17,6 @@ const PostCssAutoprefixerPlugin = require('autoprefixer');
 const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
 
-// Reduce CSS file size by ~70%
-const purgecss = require('@fullhuman/postcss-purgecss');
-
 const HtmlWebpackNewRelicPlugin = require('../lib/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
 const presets = require('../lib/presets');
@@ -111,7 +108,6 @@ module.exports = merge(commonConfig, {
                   PostCssRTLCSS(),
                   PostCssCustomMediaCSS(),
                   CssNano(),
-                  ...extraPostCssPlugins,
                 ],
               },
             },

@@ -3,7 +3,7 @@
 set -e
 node ./bin/fedx-scripts jest --coverage plugins
 cd example
-npm install
+npm install -f
 npm run lint
 npm run test
 npm run build

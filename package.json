@@ -1,6 +1,6 @@
 {
-  "name": "@edx/frontend-build",
-  "version": "1.0.0-semantically-released",
+  "name": "@edunext/frontend-build",
+  "version": "12.4.15-alpha.1",
   "description": "Build tools, setup and config for frontend apps",
   "publishConfig": {
     "access": "public"
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openedx/frontend-build.git"
+    "url": "git+https://github.com/edunext/frontend-build.git"
   },
   "keywords": [],
   "author": "edX",

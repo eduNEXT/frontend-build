@@ -1,6 +1,7 @@
 import config from 'env.config';
 import appleUrl, { ReactComponent as Apple } from './apple.svg';
 import appleImg from './apple.jpg';
+import ParagonPreview from './ParagonPreview';
 
 import './style.scss';
 
@@ -35,6 +36,7 @@ export default function App() {
       <p>env.config.js integer test: {Number.isInteger(config.INTEGER_VALUE) ? 'It was an integer. Great.' : 'It was not an integer! Why not? '}</p>
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>
+      <ParagonPreview />
     </div>
   );
 }

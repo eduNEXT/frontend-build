@@ -1,6 +1,6 @@
 {
   "name": "@openedx/frontend-build",
-  "version": "1.0.0-semantically-released",
+  "version": "12.9.10",
   "description": "Build tools, setup and config for frontend apps",
   "publishConfig": {
     "access": "public"

@@ -64,6 +64,8 @@ function getStyleUseConfig() {
             path.join(process.cwd(), 'node_modules'),
             path.join(process.cwd(), 'src'),
           ],
+          // silences compiler warnings regarding Sass deprecation warnings
+          quietDeps: true,
         },
       },
     },
@@ -87,7 +89,7 @@ module.exports = merge(commonConfig, {
       // Babel is configured with the .babelrc file at the root of the project.
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules\/(?!@edx)/,
+        exclude: /node_modules\/(?!@(open)?edx)/,
         use: {
           loader: 'babel-loader',
           options: {
